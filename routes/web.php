@@ -4,9 +4,15 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
 
-Route::get('/', function () {
-    return view('welcome');
+// Definir la ruta 'home' que falta
+Route::get('/home', function () {
+    return redirect()->route('dashboard');
 })->name('home');
+
+// Redirigir la raíz al login
+Route::get('/', function () {
+    return redirect()->route('login');
+});
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
