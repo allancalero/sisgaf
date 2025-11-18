@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
+use App\livewire\responsables;
+
 
 // Definir la ruta 'home' que falta
 Route::get('/home', function () {
@@ -36,3 +38,10 @@ Route::middleware(['auth'])->group(function () {
         )
         ->name('two-factor.show');
 });
+
+
+Route::get('/responsables', responsables::class)
+    ->name('Responsables')
+    ->middleware(['auth']);
+
+

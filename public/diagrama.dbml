@@ -1,10 +1,31 @@
 // Modelo de Base de Datos: Sistema de Gestión de Activos Fijos
 // Alcaldía de Tipitapa - Basado en inventario 
 
+// --- Enums para mejorar la integridad de los datos ---
+Enum estado_general {
+  ACTIVO
+  INACTIVO
+}
+
+Enum estado_activo {
+  NUEVO
+  BUENO
+  REGULAR
+  MALO
+}
+
+Enum rol_usuario {
+  ADMIN
+  CONTADOR
+  JEFE_UNIDAD
+  AUDITOR
+}
+
+
 Table unidades {
   id bigint [pk, increment]
   nombre varchar(255) [not null, unique, note: "Ej: Unidad ejecutora / área responsable:"]
-  estado varchar(20) [not null, default: "ACTIVO", note: "Valores: ACTIVO, INACTIVO"]
+  estado estado_general [not null, default: "ACTIVO"]
   created_at datetime 
   updated_at datetime
 }
@@ -12,7 +33,14 @@ Table unidades {
 Table clasificaciones {
   id bigint [pk, increment]
   nombre varchar(255) [not null, unique, note: "Ej: EQUIPO DE COMPUTACION, EQUIPO DE OFICINA"]
-  tipo varchar(255) [not null, unique, note: "Ej: EQUIPO DE COMPUTACION, EQUIPO DE OFICINA"]
+  created_at datetime
+  updated_at datetime
+}
+
+Table fuentes_financiamiento {
+  id bigint [pk, increment]
+  nombre varchar(255) [not null, note: "Ej: FONDOS PROPIOS"]
+  estado estado_general [not null, default: "ACTIVO"]
   created_at datetime
   updated_at datetime
 }
@@ -21,14 +49,6 @@ Table tipos_activos {
   id bigint [pk, increment]
   nombre varchar(255) [not null, unique, note: "Ej: LAPTOP, ESCRITORIO, IMPRESORA"]
   clasificacion_id bigint [ref: > clasificaciones.id, not null, note: "Clasificación a la que pertenece"]
-  created_at datetime
-  updated_at datetime
-}
-
-Table fuentes_financiamiento {
-  id bigint [pk, increment]
-  nombre varchar(255) [not null, note: "Ej: FONDOS PROPIOS"]
-  estado varchar(20) [not null, default: "ACTIVO", note: "Valores: ACTIVO, INACTIVO"]
   created_at datetime
   updated_at datetime
 }
@@ -51,8 +71,8 @@ Table responsables {
   cargo varchar(100)
   telefono varchar(100)
   email varchar(255)
-  numeroempleado varchar(50) [note: "Número de empleado o identificación interna"]
-  estado varchar(20) [not null, default: "ACTIVO", note: "Valores: ACTIVO, INACTIVO"]
+  numero_empleado varchar(50) [note: "Número de empleado o identificación interna"]
+  estado estado_general [not null, default: "ACTIVO"]
   foto varchar(255) [note: "Ruta o URL de la foto del responsable"]
   created_at datetime
   updated_at datetime
@@ -64,8 +84,8 @@ Table usuarios {
   apellido varchar(100) [not null]
   email varchar(255) [not null, unique]
   password varchar(255) [not null, note: "Almacenar hash de la contraseña"]
-  rol varchar(50) [not null, note: "Ej: ADMIN, CONTADOR, JEFE_UNIDAD, AUDITOR"]
-  estado varchar(20) [not null, default: "ACTIVO", note: "Valores: ACTIVO, INACTIVO"]
+  rol rol_usuario [not null]
+  estado estado_general [not null, default: "ACTIVO"]
   foto varchar(255) [note: "Ruta o URL de la foto del usuario"]
   created_at datetime
   updated_at datetime
@@ -97,10 +117,10 @@ Table activos_fijos {
   numero_cheque varchar(100)
   
   // Estado físico
-  estado varchar(20) [not null, default: "BUENO", note: "Valores: BUENO, REGULAR, MAL ESTADO, NUEVO, BUEN ESTADO"]
+  estado estado_activo [not null, default: "BUENO"]
   
   // Relaciones
-  unidad_id bigint [ref: > unidades.id, not null]
+  unidad_id bigint [ref: > unidades.id, not null, note: "Unidad o área responsable"]
   clasificacion_id bigint [ref: > clasificaciones.id, not null]
   tipo_activo_id bigint [ref: > tipos_activos.id]
   fuente_financiamiento_id bigint [ref: > fuentes_financiamiento.id, not null]
@@ -122,16 +142,4 @@ Table historial_asignaciones {
   motivo text
   created_at datetime
 }
-
-// Relaciones explícitas
-Ref: tipos_activos.clasificacion_id > clasificaciones.id
-Ref: activos_fijos.unidad_id > unidades.id
-Ref: activos_fijos.clasificacion_id > clasificaciones.id
-Ref: activos_fijos.tipo_activo_id > tipos_activos.id
-Ref: activos_fijos.fuente_financiamiento_id > fuentes_financiamiento.id
-Ref: activos_fijos.proveedor_id > proveedores.id
-Ref: activos_fijos.responsable_id > responsables.id
-Ref: historial_asignaciones.activo_id > activos_fijos.id
-Ref: historial_asignaciones.responsable_anterior_id > responsables.id
-Ref: historial_asignaciones.responsable_nuevo_id > responsables.id
-
+// Las relaciones ahora están definidas en línea dentro de cada tabla para mayor claridad.

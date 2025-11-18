@@ -17,10 +17,84 @@
                                    wire:navigate>{{ __('Inicio') }}
                 </flux:navlist.item>
 
-                <flux:navlist.item  icon="user-circle"
-                                   :href="route('Responsables')"
-                                   :current="request()->routeIs('Responsables')"
-                                   wire:navigate>{{ __('Responsable') }}</flux:navlist.item>
+                
+                <flux:navlist.group heading="Gestión de activos Fijo" collapsible class="mt-2">
+
+                    <flux:navlist.item icon="tag"
+                                       href="#"
+                                       :current="false"
+                                       wire:navigate>{{ __('Clasificación de activo') }}
+                    </flux:navlist.item>
+                    <flux:navlist.item icon="computer-desktop"
+                                       href="#"
+                                       :current="false"
+                                       wire:navigate>{{ __('Registro Activo') }}
+                    </flux:navlist.item>
+                    <flux:navlist.item icon="arrow-path-rounded-square"
+                                       href="#"
+                                       :current="false"
+                                       wire:navigate>{{ __('Reasignación de Activo') }}
+                    </flux:navlist.item>
+                     <flux:navlist.item icon="arrow-down-on-square-stack"
+                                       href="#"
+                                       :current="false"
+                                       wire:navigate>{{ __('Baja Activo') }}
+                    </flux:navlist.item>
+
+
+                </flux:navlist.group>
+
+                <flux:navlist.group heading="Catálogos" collapsible>
+                    <flux:navlist.item icon="building-office"
+                                       href="#"
+                                       :current="false"
+                                       wire:navigate>{{ __('Unidades Ejecutoras') }}
+                    </flux:navlist.item>
+
+                    <flux:navlist.item icon="credit-card"
+                                       href="#"
+                                       :current="false"
+                                       wire:navigate>{{ __('Fuente de Financiamiento') }}
+                    </flux:navlist.item>
+
+                    <flux:navlist.item  icon="user-circle"
+                                        :href="route('Responsables')"
+                                        :current="request()->routeIs('dashboard')"
+                                         wire:navigate>{{ __('Responsable') }}
+                    </flux:navlist.item>
+
+                    <flux:navlist.item icon="truck"
+                                       href="#"
+                                       :current="false"
+                                       wire:navigate>{{ __('Proveedor') }}
+                    </flux:navlist.item>
+
+                </flux:navlist.group>
+
+                <flux:navlist.group heading="Reportes" collapsible>
+                    <flux:navlist.item icon="chart-bar"
+                                       href="#"
+                                       :current="false"
+                                       wire:navigate>{{ __('Reportes') }}
+                    </flux:navlist.item>
+                </flux:navlist.group>
+
+                 <flux:navlist.group heading="Sistema" collapsible>
+
+                 <flux:navlist.item icon="shield-check"
+                                       href="#"
+                                       :current="false"
+                                       wire:navigate>{{ __('Seguridad y roles') }}
+                    </flux:navlist.item>
+
+                    <flux:navlist.item icon="inbox-stack"
+                                       href="#"
+                                       :current="false"
+                                       wire:navigate>{{ __('Copia Seguridad') }}
+                    </flux:navlist.item> --}}
+                    
+                 </flux:navlist.group>
+                
             </flux:navlist>
 
         </flux:sidebar>
